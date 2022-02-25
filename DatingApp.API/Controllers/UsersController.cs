@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DatingApp.API.Database;
 using DatingApp.API.Database.Entities;
+using DatingApp.API.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
