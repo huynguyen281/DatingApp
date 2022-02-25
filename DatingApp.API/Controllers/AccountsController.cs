@@ -1,20 +1,24 @@
 using System.Linq;
-using DatingApp.API.DataBase;
-using DatingApp.API.DataBase.Entities;
+using DatingApp.API.Database;
+using DatingApp.API.Database.Entities;
 using DatingApp.API.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
 using System.Text;
+using DatingApp.API.Services;
 
 namespace DatingApp.API.Controllers
 {
     public class AccountsController : BaseApiController
     {
         private readonly DataContext _context;
-        public AccountsController(DataContext context)
+        private readonly ITokenService _tokenService;
+        public AccountsController(DataContext context, ITokenService tokenService)
         {
             _context = context;
+            _tokenService = tokenService;
         }
+        
         [HttpPost("register")]
         public ActionResult<string> Register(RegisterDto register)
         {
@@ -37,7 +41,10 @@ namespace DatingApp.API.Controllers
             _context.Users.Add(user);
             if (_context.SaveChanges() > 0)
             {
-                return Ok("I'm token");
+                return Ok( new UserResponse(){
+                    Username = user.Username,
+                    Token = _tokenService.CreateToken(user)
+                } );
             }
             else
             {
@@ -65,7 +72,10 @@ namespace DatingApp.API.Controllers
                     return Unauthorized("Invalid password!");
                 }
             }
-            return Ok("I'm token");
+            return Ok( new UserResponse(){
+                    Username = user.Username,
+                    Token = _tokenService.CreateToken(user)
+            } );
         }
 
     }

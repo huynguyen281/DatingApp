@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using DatingApp.API.DataBase.Entities;
+using DatingApp.API.Database.Entities;
 
-namespace DatingApp.API.DataBase
+namespace DatingApp.API.Database
 {
     public class DataContext : DbContext
     {
